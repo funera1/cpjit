@@ -8,9 +8,13 @@ typedef struct {
     int stack_pointer;
 } ExecCtx;
 
-#define PUSH(value) do {                    \
-    ExecCtx.stack[stack_pointer] = value;   \
-    stack_pointer++;                        \
+#define PUSH(value) do {                        \
+    ExecCtx->stack[stack_pointer] = value;      \
+    stack_pointer++;                            \
+} while(0)
+
+#define POP() do {                              \
+    stack_pointer--;                            \
 } while(0)
 
 // 命令の引数はどう扱う?
@@ -23,6 +27,6 @@ void impl_i32_const(ExecCtx ctx) {
 #define IMPL(OP_NAME) CONCAT(IMPL_, OP_NAME)
 
 int
-_JIT_ENTRY() {
+_JIT_ENTRY(ExecCtx *ctx) {
     IMPL(_JIT_OPCODE);
 }
